@@ -1,0 +1,2 @@
+# Automated-Multi-VLAN-Cisco-Switch-Configuration-using-Ansible
+This project demonstrates the automation of Cisco Layer 2 switch configurations using Ansible for a medium-sized enterprise network. The playbook configures 7 Cisco switches with proper hostname assignment, VLAN segmentation for different departments, access port configurations with PortFast, trunk port setup, and automatic configuration backup.
