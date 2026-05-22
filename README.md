@@ -48,10 +48,6 @@ This project automates the initial configuration of 7 Cisco switches (SW1 to SW7
 Cisco-Automation-Project/
 ├── inventory/
 │   └── hosts
-├── group_vars/
-│   └── cisco.yml
 ├── playbooks/
 │   └── switch_configuration.yml
-├── ansible.cfg
-├── README.md
-└── requirements.yml
+└── README.md
