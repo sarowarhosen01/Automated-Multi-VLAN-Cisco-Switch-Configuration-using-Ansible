@@ -1,0 +1,140 @@
+---
+- name: Switch Configuration for all Cisco Switches
+  hosts: cisco
+  gather_facts: no
+
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+  tasks:
+
+    # Configure Hostnames
+    - name: Configure hostname for SW1
+      cisco.ios.ios_config:
+        lines:
+          - hostname SW1
+      when: inventory_hostname == "SW1"
+
+    - name: Configure hostname for SW2
+      cisco.ios.ios_config:
+        lines:
+          - hostname SW2
+      when: inventory_hostname == "SW2"
+
+    - name: Configure hostname for SW3
+      cisco.ios.ios_config:
+        lines:
+          - hostname SW3
+      when: inventory_hostname == "SW3"
+
+    - name: Configure hostname for SW4
+      cisco.ios.ios_config:
+        lines:
+          - hostname SW4
+      when: inventory_hostname == "SW4"
+
+    - name: Configure hostname for SW5
+      cisco.ios.ios_config:
+        lines:
+          - hostname SW5
+      when: inventory_hostname == "SW5"
+
+    - name: Configure hostname for SW6
+      cisco.ios.ios_config:
+        lines:
+          - hostname SW6
+      when: inventory_hostname == "SW6"
+
+    - name: Configure hostname for SW7
+      cisco.ios.ios_config:
+        lines:
+          - hostname SW7
+      when: inventory_hostname == "SW7"
+
+    # Create VLANs
+    - name: Configure VLANs
+      cisco.ios.ios_config:
+        lines:
+          - name IT
+        parents: vlan 10
+
+    - name: Configure VLAN 20
+      cisco.ios.ios_config:
+        lines:
+          - name HR
+        parents: vlan 20
+
+    - name: Configure VLAN 30
+      cisco.ios.ios_config:
+        lines:
+          - name SALES
+        parents: vlan 30
+
+    - name: Configure VLAN 40
+      cisco.ios.ios_config:
+        lines:
+          - name FINANCE
+        parents: vlan 40
+
+    - name: Configure VLAN 50
+      cisco.ios.ios_config:
+        lines:
+          - name SERVER
+        parents: vlan 50
+
+    - name: Configure VLAN 60
+      cisco.ios.ios_config:
+        lines:
+          - name CCTV
+        parents: vlan 60
+
+    - name: Configure VLAN 70
+      cisco.ios.ios_config:
+        lines:
+          - name WIFI
+        parents: vlan 70
+
+    - name: Configure VLAN 80
+      cisco.ios.ios_config:
+        lines:
+          - name GUEST
+        parents: vlan 80
+
+    - name: Configure VLAN 110
+      cisco.ios.ios_config:
+        lines:
+          - name MANAGEMENT
+        parents: vlan 110
+
+    # Configure Access Ports
+    - name: Configure access ports
+      cisco.ios.ios_config:
+        parents: "{{ item.interface }}"
+        lines:
+          - switchport mode access
+          - switchport access vlan {{ item.vlan }}
+          - spanning-tree portfast
+      loop:
+        - { interface: "interface  gigabitEthernet0/1", vlan: 10 }
+        - { interface: "interface  gigabitEthernet0/2", vlan: 20 }
+        - { interface: "interface  gigabitEthernet0/3", vlan: 30 }
+        - { interface: "interface  gigabitEthernet0/4", vlan: 40 }
+        - { interface: "interface  gigabitEthernet0/5", vlan: 50 }
+        - { interface: "interface  gigabitEthernet0/6", vlan: 60 }
+        - { interface: "interface  gigabitEthernet0/7", vlan: 70 }
+        - { interface: "interface  gigabitEthernet0/8", vlan: 80 }
+        - { interface: "interface  gigabitEthernet0/9", vlan: 110 }
+
+    # Configure Trunk Port
+    - name: Configure trunk port
+      cisco.ios.ios_config:
+        parents: interface gigabitEthernet0/0
+        lines:
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - switchport trunk allowed vlan 10,20,30,40,50,60,70,80,110
+
+    # Save Configuration
+    - name: Save configuration
+      cisco.ios.ios_config:
+        save_when: always
